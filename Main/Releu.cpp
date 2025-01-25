@@ -15,6 +15,5 @@ void releuState(bool state){
     Serial.print("Releul este: ");
     Serial.println(state == ON ? "PORNIT" : "OPRIT");
     stareReleu = state;
-    
   }
 }

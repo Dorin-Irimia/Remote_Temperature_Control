@@ -11,10 +11,8 @@ long gmtOffset_sec = 7200;    // Fus orar România (+2 ore)
 int daylightOffset_sec = 3600; // Ora de vară (1 oră)
 String oraCurenta;
 
-
-char startClock = 0;
-char stopClock = 0;
-
+int startClock = 44;
+int stopClock = 44;
 
 void initWIFI(){
     WiFi.begin(ssid, pass);
@@ -33,12 +31,13 @@ void initTIME(){
 String getOraCurenta() {
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
-    Serial.println("Nu pot obține ora!");
-    oraCurenta = "Eroare";
+    Serial.println("Nu pot obține ora!        ERROR");
+    oraCurenta = "0000      ERROR";
     return oraCurenta;
   }
   char buffer[6];
   strftime(buffer, sizeof(buffer), "%H:%M", &timeinfo); // Format HH:MM
   oraCurenta = String(buffer);
-   return oraCurenta;
+  Serial.println(oraCurenta);
+  return oraCurenta;
 }

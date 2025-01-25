@@ -1,5 +1,6 @@
 #include "blynk_func.h"
 #include "releu.h"
+#include "DHT11.h"
 #include "data.h"
 #include <BlynkSimpleEsp32.h>
 
@@ -8,24 +9,12 @@ void initBlynk(){
   Blynk.begin(auth, ssid, pass);
   Blynk.virtualWrite(BLYNK_WMODE, 0);    // Setare WORK MODE pe MANUAL
   Blynk.virtualWrite(BLYNK_RELAY, 0);    // Setare buton RELEU pe OPRIT
+  Blynk.virtualWrite(BLYNK_START_CLOCK, 44); 
+  Blynk.virtualWrite(BLYNK_STOP_CLOCK, 44);  
 }
 
 void runBlynk(){
   Blynk.run();
-}
-
-void showTemp(float _temperatura){
-  Blynk.virtualWrite(BLYNK_TEMP, _temperatura); // Trimite temperatura la Blynk (V4)
-  Serial.print("Temperatura: ");
-  Serial.println(_temperatura);
-}
-
-
-void showOraCurenta(){
-  String _ora = getOraCurenta();
-  Blynk.virtualWrite(BLYNK_TIME, _ora ); // Trimite ora la Blynk (V2)
-  Serial.print("Ora curentă: ");
-  Serial.println(_ora);
 }
 
 void releuResponse(bool state){
@@ -61,6 +50,19 @@ BLYNK_WRITE(BLYNK_START_CLOCK) {
 
 BLYNK_WRITE(BLYNK_STOP_CLOCK) {
   stopClock = param.asInt(); // Valoare primita de la butonul Blynk
+  if(stopClock < startClock){
+    stopClock = startClock;
+    Blynk.virtualWrite(BLYNK_STOP_CLOCK, stopClock);  
+  }
   Serial.print("Ora de oprire a fost setata la:  ");
   Serial.println(stopClock);  
+}
+
+BLYNK_WRITE(BLYNK_INFO) {
+  int _blynkInfo = param.asInt(); 
+  if(_blynkInfo == ON){
+    String _ora = getOraCurenta();
+    Blynk.virtualWrite(BLYNK_TIME, _ora ); // Trimite ora la Blynk (V2)
+    Blynk.virtualWrite(BLYNK_TEMP, temperatura); // Trimite temperatura la Blynk (V8)
+  }
 }

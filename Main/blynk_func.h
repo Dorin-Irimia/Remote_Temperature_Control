@@ -6,11 +6,10 @@
 #define BLYNK_TEMPLATE_NAME "Quickstart Template"
 #define BLYNK_AUTH_TOKEN "HdYxokz-8EgYdvi-BKrlZyaOgi1jkr27"
 
+
 void initBlynk();
 void runBlynk();
 
-void showTemp(float);
-void showOraCurenta();
 void releuResponse(bool);
 
 #define BLYNK_RELAY V1
@@ -18,6 +17,8 @@ void releuResponse(bool);
 #define BLYNK_TEMP V4
 #define BLYNK_TIME V5
 #define BLYNK_START_CLOCK V6
+#define BLYNK_STOP_CLOCK V7
+#define BLYNK_INFO V8
 
 
 #endif

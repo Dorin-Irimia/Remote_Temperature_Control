@@ -24,6 +24,6 @@ void loop() {
     lastTempUpdate = millis();
     tempRead();
   }
-  delay(1000);
+  delay(100);
  
 }
