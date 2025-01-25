@@ -1,15 +1,16 @@
 #ifndef RELEU_H
 #define RELEU_H
 
-#define RELAYPIN 5 
-#include "main.h"
+#include "common.h"
+#include "blynk_func.h"
 
-void initReleu();       // Funcție pentru inițializarea releului
-void releuState(bool state);
+#define RELAYPIN 5
 
 extern bool stareReleu;
 extern bool workMode;
 
- 
+void initReleu();       // Funcție pentru inițializarea releului
+void releuState(bool state);
+
 
 #endif

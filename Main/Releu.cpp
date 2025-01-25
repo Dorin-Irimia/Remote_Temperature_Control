@@ -11,13 +11,10 @@ void initReleu(){
 void releuState(bool state){
   if (state != stareReleu){
     digitalWrite(RELAYPIN, state);
+    releuResponse(state);
     Serial.print("Releul este: ");
-    Serial.println(state == 1 ? "PORNIT" : "OPRIT");
+    Serial.println(state == ON ? "PORNIT" : "OPRIT");
     stareReleu = state;
-    releuResponse(stareReleu);
-  }
-  else{
-    Serial.print("Releul este: ");
-    Serial.println(state);
+    
   }
 }
