@@ -9,10 +9,10 @@ char auth[] = "HdYxokz-8EgYdvi-BKrlZyaOgi1jkr27";    // Tokenul primit de la Bly
 char* ntpServer = "pool.ntp.org";
 long gmtOffset_sec = 7200;    // Fus orar România (+2 ore)
 int daylightOffset_sec = 3600; // Ora de vară (1 oră)
-String oraCurenta;
 
-int startClock = 44;
-int stopClock = 44;
+
+int startClock = START_TIME;
+int stopClock = START_TIME;
 
 void initWIFI(){
     WiFi.begin(ssid, pass);
@@ -30,9 +30,10 @@ void initTIME(){
 
 String getOraCurenta() {
   struct tm timeinfo;
+  String oraCurenta = "";
   if (!getLocalTime(&timeinfo)) {
     Serial.println("Nu pot obține ora!        ERROR");
-    oraCurenta = "0000      ERROR";
+    oraCurenta = "00:00";
     return oraCurenta;
   }
   char buffer[6];

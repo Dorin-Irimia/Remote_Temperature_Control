@@ -5,7 +5,7 @@ bool workMode = false;
 
 void initReleu(){
   pinMode(RELAYPIN, OUTPUT);
-  digitalWrite(RELAYPIN, LOW);
+  digitalWrite(RELAYPIN, OFF);
 }
 
 void releuState(bool state){

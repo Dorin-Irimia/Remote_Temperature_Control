@@ -20,10 +20,10 @@ void loop() {
   if(workMode){
     tempAutoControl();
   }
-  if (millis() - lastTempUpdate > 1000) {
+  if (millis() - lastTempUpdate > TEMP_DELAY) {
     lastTempUpdate = millis();
     tempRead();
   }
-  delay(100);
+  delay(RUN_DELAY);
  
 }

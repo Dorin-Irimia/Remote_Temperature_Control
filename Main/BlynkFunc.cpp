@@ -7,10 +7,10 @@
 
 void initBlynk(){
   Blynk.begin(auth, ssid, pass);
-  Blynk.virtualWrite(BLYNK_WMODE, 0);    // Setare WORK MODE pe MANUAL
-  Blynk.virtualWrite(BLYNK_RELAY, 0);    // Setare buton RELEU pe OPRIT
-  Blynk.virtualWrite(BLYNK_START_CLOCK, 44); 
-  Blynk.virtualWrite(BLYNK_STOP_CLOCK, 44);  
+  Blynk.virtualWrite(BLYNK_WMODE, OFF);    // Setare WORK MODE pe MANUAL
+  Blynk.virtualWrite(BLYNK_RELAY, OFF);    // Setare buton RELEU pe OPRIT
+  Blynk.virtualWrite(BLYNK_START_CLOCK, START_TIME); 
+  Blynk.virtualWrite(BLYNK_STOP_CLOCK, START_TIME);  
 }
 
 void runBlynk(){

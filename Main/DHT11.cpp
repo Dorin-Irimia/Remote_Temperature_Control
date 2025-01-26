@@ -16,7 +16,7 @@ void tempRead() {
   temperatura = dht.readTemperature();
   if (isnan(temperatura) || temperatura < 0 || temperatura > 40) {
     Serial.println("Eroare la citirea senzorului DHT sau temperatură in afara intervalului!");
-    temperatura = 999; // Marcaj pentru eroare
+    temperatura = 255; // Marcaj pentru eroare
     releuState(OFF);
     return;
   }
@@ -31,10 +31,10 @@ void tempAutoControl(){
   int difference = abs(_h - startClock);
   Serial.print("diferenta de ore este = ");
   Serial.println(difference);
-  if((temperatura < 24) && (0 <=  difference <= (stopClock - startClock))){
+  if((temperatura < START_TEMP) && (0 <=  difference <= (stopClock - startClock))){
     releuState(ON);
   }
-  else if(25 < temperatura < 50){
+  else if(STOP_TEMP < temperatura < ERROR_TEMP){
     releuState(OFF);
   }
   else{
