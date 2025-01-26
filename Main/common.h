@@ -10,7 +10,7 @@
 #define BLYNK_AUTH_TOKEN "cWhwnAQKt94FTrQjwnG-7misEuEe4SdP"
 
 //WIFI
-#define NAME_WIFI "MERCURYS_1EDC"    //TP-Link_F6B8   
+#define NAME_WIFI "MERCUSYS_1EDC"    //TP-Link_F6B8   
 #define PASSWORD_WIFI "39689597"  //21580260  
 #define TOKEN "cWhwnAQKt94FTrQjwnG-7misEuEe4SdP"
 
