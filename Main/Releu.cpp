@@ -3,15 +3,15 @@
 bool stareReleu = false;
 bool workMode = false;
 
-void initReleu(){
+void InitReleu(){
   pinMode(RELAYPIN, OUTPUT);
   digitalWrite(RELAYPIN, OFF);
 }
 
-void releuState(bool state){
+void ReleuState(bool state){
   if (state != stareReleu){
     digitalWrite(RELAYPIN, state);
-    releuResponse(state);
+    ReleuResponse(state);
     Serial.print("Releul este: ");
     Serial.println(state == ON ? "PORNIT" : "OPRIT");
     stareReleu = state;

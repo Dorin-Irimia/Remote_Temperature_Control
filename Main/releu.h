@@ -9,8 +9,8 @@
 extern bool stareReleu;
 extern bool workMode;
 
-void initReleu();       // Funcție pentru inițializarea releului
-void releuState(bool state);
+void InitReleu();       
+void ReleuState(bool state);
 
 
 #endif

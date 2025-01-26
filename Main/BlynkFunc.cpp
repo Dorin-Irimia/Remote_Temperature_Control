@@ -5,26 +5,26 @@
 #include <BlynkSimpleEsp32.h>
 
 
-void initBlynk(){
+void InitBlynk(){
   Blynk.begin(auth, ssid, pass);
   Blynk.virtualWrite(BLYNK_WMODE, OFF);    // Setare WORK MODE pe MANUAL
   Blynk.virtualWrite(BLYNK_RELAY, OFF);    // Setare buton RELEU pe OPRIT
   Blynk.virtualWrite(BLYNK_START_CLOCK, START_TIME); 
-  Blynk.virtualWrite(BLYNK_STOP_CLOCK, START_TIME);  
+  Blynk.virtualWrite(BLYNK_STOP_CLOCK, STOP_TIME);  
 }
 
-void runBlynk(){
+void RunBlynk(){
   Blynk.run();
 }
 
-void releuResponse(bool state){
+void ReleuResponse(bool state){
  Blynk.virtualWrite(BLYNK_RELAY, state);    // Setare buton cu starea releului
 }
 
 BLYNK_WRITE(BLYNK_RELAY) {
-  int valoare = param.asInt(); // Valoare primita de la butonul Blynk
-  if(stareReleu != valoare){
-    releuState(valoare);
+  int _valoare = param.asInt(); // Valoare primita de la butonul Blynk
+  if(stareReleu != _valoare){
+    ReleuState(_valoare);
     if(workMode == ON){   // Trecere automata pe mod manual
       Blynk.virtualWrite(BLYNK_WMODE, OFF);
       workMode = OFF;
@@ -34,9 +34,9 @@ BLYNK_WRITE(BLYNK_RELAY) {
 }
 
 BLYNK_WRITE(BLYNK_WMODE) {
-  int valoare = param.asInt(); // Valoare primita de la butonul Blynk
-  if(workMode != valoare){
-    workMode = valoare;
+  int _valoare = param.asInt(); // Valoare primita de la butonul Blynk
+  if(workMode != _valoare){
+    workMode = _valoare;
     Serial.print("Work Mode is now ");
     Serial.println(workMode == ON ? "AUTOMATE" : "MANUALE");  
   }
@@ -61,7 +61,7 @@ BLYNK_WRITE(BLYNK_STOP_CLOCK) {
 BLYNK_WRITE(BLYNK_INFO) {
   int _blynkInfo = param.asInt(); 
   if(_blynkInfo == ON){
-    String _ora = getOraCurenta();
+    String _ora = GetOraCurenta();
     Blynk.virtualWrite(BLYNK_TIME, _ora ); // Trimite ora la Blynk (V2)
     Blynk.virtualWrite(BLYNK_TEMP, temperatura); // Trimite temperatura la Blynk (V8)
   }

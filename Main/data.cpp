@@ -2,19 +2,19 @@
 #include <WiFi.h>
 #include <time.h>
 
-char ssid[] = "TP-Link_F6B8";      // Numele rețelei Wi-Fi
-char pass[] = "21580260";    // Parola rețelei Wi-Fi
-char auth[] = "HdYxokz-8EgYdvi-BKrlZyaOgi1jkr27";    // Tokenul primit de la Blynk
+char ssid[] = NAME_WIFI;        // Numele rețelei Wi-Fi
+char pass[] = PASSWORD_WIFI;   // Parola rețelei Wi-Fi
+char auth[] = TOKEN;          // Tokenul primit de la Blynk
 
 char* ntpServer = "pool.ntp.org";
 long gmtOffset_sec = 7200;    // Fus orar România (+2 ore)
 int daylightOffset_sec = 3600; // Ora de vară (1 oră)
 
-
 int startClock = START_TIME;
-int stopClock = START_TIME;
+int stopClock = STOP_TIME;
 
-void initWIFI(){
+
+void InitWIFI(){
     WiFi.begin(ssid, pass);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
@@ -23,22 +23,22 @@ void initWIFI(){
   Serial.println("Conectat la Wi-Fi!");
 }
 
-
-void initTIME(){
+void InitTIME(){
    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 }
 
-String getOraCurenta() {
+
+String GetOraCurenta() {
   struct tm timeinfo;
-  String oraCurenta = "";
+  String _oraCurenta = "";
   if (!getLocalTime(&timeinfo)) {
     Serial.println("Nu pot obține ora!        ERROR");
-    oraCurenta = "00:00";
-    return oraCurenta;
+    _oraCurenta = "00:00";
+    return _oraCurenta;
   }
   char buffer[6];
   strftime(buffer, sizeof(buffer), "%H:%M", &timeinfo); // Format HH:MM
-  oraCurenta = String(buffer);
-  Serial.println(oraCurenta);
-  return oraCurenta;
+  _oraCurenta = String(buffer);
+  Serial.println(_oraCurenta);
+  return _oraCurenta;
 }

@@ -9,9 +9,9 @@ extern float temperatura;
 #define DHTPIN 4                
 #define DHTTYPE DHT11          
 
-void initDHT11();    
-void tempRead();
-void tempAutoControl();
+void InitDHT11();    
+void TempRead();
+void TempAutoControl();
 
 
 #endif

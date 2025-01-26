@@ -6,23 +6,23 @@
 
 void setup() {
   Serial.begin(115200);
-  initWIFI();
-  initTIME();
-  initBlynk();                  // Configurare Blynk
-  initDHT11();         
-  initReleu();                  // Configurare Releu
+  InitWIFI();
+  InitTIME();
+  InitBlynk();                  // Configurare Blynk
+  InitDHT11();         
+  InitReleu();                  // Configurare Releu
 }
 
 void loop() {
   static unsigned long lastTempUpdate = 0;
   
-  runBlynk();                  
+  RunBlynk();                  
   if(workMode){
-    tempAutoControl();
+    TempAutoControl();
   }
   if (millis() - lastTempUpdate > TEMP_DELAY) {
     lastTempUpdate = millis();
-    tempRead();
+    TempRead();
   }
   delay(RUN_DELAY);
  

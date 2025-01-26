@@ -7,10 +7,9 @@ extern char ssid[];
 extern char pass[];   
 extern char auth[];  
 
-void initWIFI();
-void initTIME();
-
-String getOraCurenta();
+void InitWIFI();
+void InitTIME();
+String GetOraCurenta();
 
 extern int startClock;
 extern int stopClock;
