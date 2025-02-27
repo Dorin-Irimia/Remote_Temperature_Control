@@ -13,13 +13,14 @@
 #define RELAY_PIN 5
 #define SWITCH_RELAY_PIN 2
 #define SWITCH_MODE_PIN 3
-#define LED_ORANGE = 6
-#define LED_GREEN = 7
+#define LED_ORANGE  6
+#define LED_GREEN  7
 
 extern WiFiClient espClient;
 extern PubSubClient client;
 
 extern int relayState;
+extern int remoteWorkMode;
 extern float temperatura;
 
 extern char* ntpServer;

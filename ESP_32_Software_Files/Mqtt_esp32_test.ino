@@ -4,6 +4,7 @@ float temperatura = 0.0;
 int switchRelayState = 0;
 int switchModeState = 0;
 int relayState = 0;
+int remoteWorkMode = 0;
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -72,50 +73,69 @@ void setup() {
 void loop() {
   tempRead();
   switchModeState = digitalRead(SWITCH_MODE_PIN);
-  if(switchModeState == Low){
+  if(switchModeState == LOW){
     static unsigned long startManualTime = 0;
     switchRelayState = digitalRead(SWITCH_RELAY_PIN);
-    if((switchRelayState == Low) && (millis() - startManualTime < 1800000)){
-      digitalWrite(RELAY_PIN, HIGH); 
-      digitalWrite(LED_ORANGE, HIGH);
-      startManualTime = millis();
+    if((switchRelayState == LOW) && (millis() - startManualTime < 1800000)){
       if(temperatura > 18){
         digitalWrite(RELAY_PIN, LOW); 
+        relayState = 0;
       }
+      else{
+        digitalWrite(RELAY_PIN, HIGH);
+        relayState = 1; 
+        digitalWrite(LED_ORANGE, HIGH);
+        startManualTime = millis();
+      } 
     }
     else if(switchRelayState == HIGH){
       digitalWrite(RELAY_PIN, LOW); 
+      relayState = 0;
       digitalWrite(LED_ORANGE, LOW);
       startManualTime = 0;
     }
     else{
+        digitalWrite(RELAY_PIN, LOW);
+        relayState = 0;
+        digitalWrite(LED_ORANGE, !digitalRead(LED_ORANGE));
+        delay(100);
+      }
+  }
+  else{
+    if(temperatura < 3)
+    {
+      digitalWrite(LED_ORANGE, HIGH);
+      digitalWrite(LED_GREEN, LOW);
+
+      while(temperatura < 5){
+        digitalWrite(RELAY_PIN, HIGH); 
+        relayState = 1;
+        digitalWrite(LED_ORANGE, !digitalRead(LED_GREEN));
+        digitalWrite(LED_GREEN, !digitalRead(LED_ORANGE));
+        tempRead();
+        delay(100);
+      }
+
       digitalWrite(RELAY_PIN, LOW);
-      digitalWrite(LED_ORANGE, !digitalRead(LED_ORANGE));
-      delay(100);
+      relayState = 0;
+      digitalWrite(LED_ORANGE, LOW);
+      digitalWrite(LED_GREEN, LOW); 
     }
-  }
 
-  if(temperatura < 3)
-  {
-    while(temperatura < 5){
-      digitalWrite(RELAY_PIN, HIGH); 
-      digitalWrite(LED_ORANGE, !digitalRead(LED_GREEN));
-      digitalWrite(LED_GREEN, !digitalRead(LED_ORANGE));
+    if (!client.connected()) {
+      reconnect();
     }
-    
-  }
+    client.loop();
 
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
+    static unsigned long lastPublishTime = 0;
+    if (millis() - lastPublishTime > 500) {
+      publishData();
+      lastPublishTime = millis();
+    }
 
-  static unsigned long lastPublishTime = 0;
-  if (millis() - lastPublishTime > 500) {
-    publishData();
-    lastPublishTime = millis();
-  }
+    autoRun();
 
+  }
 }
 
 
@@ -148,30 +168,31 @@ String getOraCurenta() {
 }
 
   // bool auto_state = Fals
-autoRun(){
+void autoRun(){
   String _ora = getOraCurenta();
-  int _h = _ora.substring(0,2).toInt();
-  int difference = abs(_h - startClock);
-  if(auto_state == True){
-    if((temperatura < 3))
-
-  }
-}
-
-
-void tempAutoControl(){
-  String _ora = getOraCurenta();
-  int _h = _ora.substring(0,2).toInt();
-  int difference = abs(_h - startClock);
-  Serial.print("diferenta de ore este = ");
-  Serial.println(difference);
-  if((temperatura < 24) && (0 <=  difference <= (stopClock - startClock))){
-    releuState(ON);
-  }
-  else if(25 < temperatura < 50){
-    releuState(OFF);
-  }
-  else{
-    releuState(OFF);
+  int _hCurenta = _ora.substring(0,2).toInt();
+  int _hStart = startTime.substring(0,2).toInt();
+  int _hStop = stopTime.substring(0,2).toInt();
+  
+  if((_hStart <= _hCurenta) && (_hCurenta < _hStop)){
+    tempRead();
+    if(remoteWorkMode == 1){
+      if(temperatura < 5){
+        digitalWrite(RELAY_PIN, HIGH);
+        relayState = 1;
+        digitalWrite(LED_GREEN, HIGH); 
+      }
+      if(temperatura > 20){
+        digitalWrite(RELAY_PIN, LOW);
+        relayState = 0;
+        digitalWrite(LED_GREEN, LOW); 
+      }
+      if(temperatura > 30){
+        digitalWrite(RELAY_PIN, LOW);
+        relayState = 0;
+        digitalWrite(LED_GREEN, LOW); 
+        remoteWorkMode = 555;
+      }
+    }
   }
 }

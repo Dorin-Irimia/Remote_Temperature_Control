@@ -30,14 +30,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   if (strcmp(topic, topic_control) == 0) {
     if (strncmp((char*)payload, "aprinde", length) == 0) {
-      digitalWrite(releuPin, HIGH);
-      Serial.print("RELEU APRINS   ");
       relayState = 1;
+      remoteWorkMode = 0;
       Serial.println(relayState);
     } else if (strncmp((char*)payload, "stinge", length) == 0) {
-      digitalWrite(releuPin, LOW);
-      Serial.print("RELEU STINS  ");
       relayState = 0;
+      remoteWorkMode = 0;
       Serial.println(relayState);
     }
   }
@@ -66,10 +64,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
   if (strcmp(topic, topic_work_mode) == 0) {
     if (strncmp((char*)payload, "AUTOMAT", length) == 0) {
       Serial.println("MOD_LUCRU_AUTOMAT");
-      relayState = 1;
+      remoteWorkMode = 1;
     } else if (strncmp((char*)payload, "MANUAL", length) == 0) {
-      digitalWrite(releuPin, LOW);
       Serial.println("MOD_LUCRU_MANUAL");
+      remoteWorkMode = 0;
       relayState = 0;
     }
   }
@@ -80,13 +78,21 @@ void publishData() {
   if(relayState == 1){
       client.publish(topic_date, String("Releu este Aprins").c_str());
       Serial.println("Date publicate!_APRINS");
-      client.publish(topic_data_work_mode, String("AUTOMAT").c_str());
   }
   if(relayState == 0){
       client.publish(topic_date, String("Releu este Stins").c_str());
       Serial.println("Date publicate!_STINS");
-      client.publish(topic_data_work_mode, String("MANUAL").c_str());
-     }
+  }
+  if(remoteWorkMode == 1){
+    client.publish(topic_data_work_mode, String("AUTOMAT").c_str());
+  }
+  if(remoteWorkMode == 0){
+    client.publish(topic_data_work_mode, String("MANUAL").c_str());
+  }
+  if(remoteWorkMode == 555){
+    client.publish(topic_data_work_mode, String(" EROARE  !!!").c_str());
+  }
+
    client.publish(topic_data_clock_stored, (String(startTime)+ " - " +String(stopTime)).c_str());
  
 }
