@@ -47,8 +47,8 @@ void setup() {
   pinMode(RELAY_PIN, OUTPUT);
   digitalWrite(RELAY_PIN, LOW); 
 
-  pinMode(SWITCH_RELAY_PIN, INPUT);
-  pinMode(SWITCH_MODE_PIN, INPUT);
+  pinMode(SWITCH_RELAY_PIN, INPUT_PULLUP);
+  pinMode(SWITCH_MODE_PIN, INPUT_PULLUP);
 
   pinMode(LED_ORANGE, OUTPUT);
   digitalWrite(LED_ORANGE, LOW); 
@@ -195,4 +195,5 @@ void autoRun(){
       }
     }
   }
+  delay(200);
 }
