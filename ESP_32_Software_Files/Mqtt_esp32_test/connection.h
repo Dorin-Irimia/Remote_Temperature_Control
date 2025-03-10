@@ -8,13 +8,13 @@
 #include <ArduinoJson.h>
 #include <Arduino.h>
 
-#define DHTPIN 4
+#define DHTPIN 2
 #define DHTTYPE DHT11
-#define RELAY_PIN 5
-#define SWITCH_RELAY_PIN 2
-#define SWITCH_MODE_PIN 3
-#define LED_ORANGE  6
-#define LED_GREEN  7
+#define RELAY_PIN 4
+#define SWITCH_RELAY_PIN 18
+#define SWITCH_MODE_PIN 19
+#define LED_ORANGE 15
+#define LED_GREEN  22
 
 extern WiFiClient espClient;
 extern PubSubClient client;

@@ -34,7 +34,7 @@ const char* topic_work_mode = "topic/work_mode";
 
 
 String startTime = "07:00"; // Initialize with default values
-String stopTime = "8:20";
+String stopTime = "20:20";
 // Pinul releului (modifică dacă este necesar)
 
 
@@ -73,9 +73,13 @@ void setup() {
 void loop() {
   tempRead();
   switchModeState = digitalRead(SWITCH_MODE_PIN);
+  Serial.print("switchModeState         _");
+  Serial.println(switchModeState);
   if(switchModeState == LOW){
     static unsigned long startManualTime = 0;
     switchRelayState = digitalRead(SWITCH_RELAY_PIN);
+      Serial.print("switchRelayState         _");
+      Serial.println(switchRelayState);
     if((switchRelayState == LOW) && (millis() - startManualTime < 1800000)){
       if(temperatura > 18){
         digitalWrite(RELAY_PIN, LOW); 
@@ -133,7 +137,12 @@ void loop() {
       lastPublishTime = millis();
     }
 
-    autoRun();
+    if(relayState == 0)
+      digitalWrite(RELAY_PIN, LOW);
+    if(relayState == 1)
+      digitalWrite(RELAY_PIN, HIGH);
+  
+    //autoRun();
 
   }
 }
@@ -173,22 +182,28 @@ void autoRun(){
   int _hCurenta = _ora.substring(0,2).toInt();
   int _hStart = startTime.substring(0,2).toInt();
   int _hStop = stopTime.substring(0,2).toInt();
+  Serial.println(_hCurenta);
+  Serial.println(_hStart);
+  Serial.println(_hStop);
   
   if((_hStart <= _hCurenta) && (_hCurenta < _hStop)){
     tempRead();
     if(remoteWorkMode == 1){
       if(temperatura < 5){
         digitalWrite(RELAY_PIN, HIGH);
+         Serial.println("             RELEUL A FOST SETAT   1 ");
         relayState = 1;
         digitalWrite(LED_GREEN, HIGH); 
       }
       if(temperatura > 20){
         digitalWrite(RELAY_PIN, LOW);
+        Serial.println("             RELEUL A FOST SETAT  0 ");
         relayState = 0;
         digitalWrite(LED_GREEN, LOW); 
       }
       if(temperatura > 30){
         digitalWrite(RELAY_PIN, LOW);
+         Serial.println("             RELEUL A FOST SETAT  0 ");
         relayState = 0;
         digitalWrite(LED_GREEN, LOW); 
         remoteWorkMode = 555;
